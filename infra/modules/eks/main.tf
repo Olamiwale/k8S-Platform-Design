@@ -6,14 +6,11 @@ resource "aws_iam_role" "cluster" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [{
       Effect = "Allow"
-
       Principal = {
         Service = "eks.amazonaws.com"
       }
-
       Action = "sts:AssumeRole"
     }]
   })
@@ -25,7 +22,6 @@ resource "aws_iam_role_policy_attachment" "cluster" {
 }
 
 
-
 # Worker Node IAM Role
 
 resource "aws_iam_role" "node" {
@@ -33,14 +29,11 @@ resource "aws_iam_role" "node" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-
     Statement = [{
       Effect = "Allow"
-
       Principal = {
         Service = "ec2.amazonaws.com"
       }
-
       Action = "sts:AssumeRole"
     }]
   })
@@ -61,10 +54,7 @@ resource "aws_iam_role_policy_attachment" "ecr" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPullOnly"
 }
 
-
-
 # EKS Cluster
-
 resource "aws_eks_cluster" "this" {
   name     = var.cluster_name
   role_arn = aws_iam_role.cluster.arn
@@ -104,7 +94,6 @@ resource "aws_eks_cluster" "this" {
 
 
 # Managed Worker Node Group
-
 resource "aws_eks_node_group" "this" {
   cluster_name    = aws_eks_cluster.this.name
   node_group_name = "${var.cluster_name}-workers"
@@ -141,7 +130,6 @@ resource "aws_eks_node_group" "this" {
 
 
 # EKS OIDC Provider
-
 data "tls_certificate" "eks" {
   url = aws_eks_cluster.this.identity[0].oidc[0].issuer
 }
@@ -170,5 +158,3 @@ resource "aws_ec2_tag" "eks_subnet" {
   key         = "kubernetes.io/cluster/${var.cluster_name}"
   value       = "shared"
 }
-
-
