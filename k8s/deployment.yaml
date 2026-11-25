@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: {YOUR_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/k8s-platform-app:v1
+          image: 234073095486.dkr.ecr.us-east-1.amazonaws.com/k8s-platform-app:v1
           ports:
             - containerPort: 3000
           resources:
